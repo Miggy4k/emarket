@@ -1,5 +1,7 @@
 {
   "name": "emarket",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

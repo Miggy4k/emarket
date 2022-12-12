@@ -1,0 +1,44 @@
+.menutext
+{
+    font-family: Sansation;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 18px;
+        letter-spacing: 0em;
+        text-align: left;
+        height: 18px;
+            width: 50px;
+            left: -45px;
+            top: 11px;
+            border-radius: nullpx;
+            color:#000000 !important;
+}
+
+.menuicon
+{
+    box-sizing: border-box;
+    
+        position: relative;
+        left: 5%;
+        right: 64.29%;
+        top: 0%;
+        bottom: 0%;
+    
+        //background: #E0163D;
+}
+.menuheading{
+    height: 27px;
+        width: 106px;
+        left: 16px;
+        top: 70px;
+        border-radius: nullpx;
+}
+.exit
+{
+    height: 42px;
+        width: 154px;
+        left: 16px;
+        top: 784px;
+        border-radius: 5px;
+        padding: 8px 15px 8px 15px;
+}

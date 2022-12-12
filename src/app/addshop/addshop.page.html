@@ -1,0 +1,66 @@
+<ion-header style="z-index: 0;">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-img (click)="back()" class="back" src="assets/images/back.png"></ion-img>
+        </ion-buttons>
+        <ion-title>Add Shop</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <div class="img_div">
+        <ion-grid>
+            <ion-row>
+                <ion-col></ion-col>
+                <ion-col><img *ngIf="base64" [src]="base64" /></ion-col>
+                <ion-col></ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col></ion-col>
+                <ion-col> <img class="upload_logo" (click)="pickImage()" src="assets/images/upload.png" /></ion-col>
+                <ion-col></ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col></ion-col>
+                <ion-col style="text-align: center;">
+                    <ion-label>Upload Image</ion-label>
+                </ion-col>
+                <ion-col></ion-col>
+            </ion-row>
+        </ion-grid>
+        <!-- <img *ngIf="base64" [src]="base64" /><br />
+        <img (click)="pickImage()" src="assets/images/upload.png" /><br />
+        <ion-label>Upload Image</ion-label> -->
+
+    </div>
+    <!-- <div class="img_div">
+        <img (click)="pickImage()" class="upload_logo" src="assets/images/upload.png" />
+        <ion-label class="upload_text">Upload Image</ion-label>
+    </div> -->
+    <br />
+    <ion-list>
+        <ion-list-header>Shop Info</ion-list-header>
+        <ion-item>
+            <ion-label position="stacked">Shop Name</ion-label>
+            <ion-input [(ngModel)]="shopObj.shopName"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Shop Description</ion-label>
+            <ion-textarea [(ngModel)]="shopObj.shopDescription"></ion-textarea>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Category</ion-label>
+            <ion-select [(ngModel)]="shopObj.category">
+                <ion-select-option value="resturant">
+                    Resturant
+                </ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Location</ion-label>
+            <ion-textarea [(ngModel)]="shopObj.location"></ion-textarea>
+        </ion-item>
+        <br/>
+        <ion-button (click)="uploadImage()" expand="full">{{btnText}}</ion-button>
+    </ion-list>
+</ion-content>

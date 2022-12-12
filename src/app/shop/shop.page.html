@@ -1,0 +1,45 @@
+<ion-header style="z-index:0;">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button>
+                <img src="assets/images/menu.png" />
+            </ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+            Shops
+        </ion-title>
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div *ngFor="let key of keys">
+        <ion-card *ngIf="obj[key]['status'] == '1'">
+            <ion-card-header>
+                <ion-card-title>{{obj[key].shopName}}</ion-card-title>
+                <ion-card-subtitle>{{obj[key].shopDescription}}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-list>
+                    <ion-item lines="none">
+                        <ion-thumbnail slot="start">
+                            <img alt="Silhouette of mountains" [src]="obj[key].imgPath" />
+                        </ion-thumbnail>
+                        <ion-label style="font-size:14px;" slot="start">Shop ID<br /><b>{{key}}</b></ion-label>
+                        <ion-label style="font-size:14px;" slot="end">Status<br /><b style="color:green;">Active</b></ion-label>
+                    </ion-item>
+                    <ion-button size="small">View</ion-button>
+                    <ion-button (click)="goto('/addshop',obj[key],key)" size="small">Edit</ion-button>
+
+                    <ion-button (click)="removeShop(obj[key],key)" size="small">Delete</ion-button>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+    </div>
+    <ion-fab (click)="goto('/addshop')" slot="fixed" horizontal="end" vertical="bottom">
+        <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
+</ion-content>

@@ -1,3 +1,61 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+    <ion-menu (ionWillOpen)="onMenuOpen()" side="start" menuId="first" swipeGesture="false" contentId="content1">
+        <ion-header style="z-index: 0;">
+            <ion-toolbar>
+
+                <ion-item>
+                    <!-- <ion-avatar slot="start">
+            <img [src]="cLogo">
+          </ion-avatar> -->
+                    <ion-img class="menuheading" src="assets/images/menutext.png"></ion-img>
+                    <ion-img slot="end" src="assets/images/menuopen.png"></ion-img>
+
+                </ion-item>
+
+            </ion-toolbar>
+        </ion-header>
+        <ion-content>
+            <ion-list>
+                <ion-menu-toggle auto-hide="true">
+
+                    <ion-item lines="none" (click)="goto(pages)" *ngFor="let pages of navigate">
+                        <!-- <ion-label  class="menuicon menutext">
+                <ion-img style="width: 30px;height:17px;"  [src]="pages.icon"></ion-img>{{pages.title}}
+              </ion-label> -->
+                        <!-- <ion-thumbnail slot="start">
+                <img [src]="pages.icon" />
+              </ion-thumbnail> -->
+                        <ion-img slot="start" style="width: 30px;height:17px;" [src]="pages.icon"></ion-img>
+                        <ion-label class="menutext">
+                            {{pages.title}}
+                        </ion-label>
+
+                    </ion-item>
+
+
+
+
+
+                </ion-menu-toggle>
+            </ion-list>
+        </ion-content>
+        <ion-footer>
+
+            <ion-toolbar (click)="Logout()">
+
+                <!-- <ion-title style="text-align: center;">
+          <ion-icon style="position:relative;bottom:-9px;font-weight: bold;" size="large" name="log-out"></ion-icon>
+          Logout
+        </ion-title> -->
+                <ion-item lines="none">
+                    <ion-img src="assets/images/profile_pic.png" slot="start"></ion-img>
+                    <ion-label style="color: rgba(0, 0, 0, 1);
+                    ">Admin</ion-label>
+                </ion-item>
+                <ion-img class="exit" src="assets/images/exit.png"></ion-img>
+            </ion-toolbar>
+        </ion-footer>
+    </ion-menu>
+    <ion-router-outlet id="content1"></ion-router-outlet>
+
 </ion-app>

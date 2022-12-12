@@ -2,25 +2,97 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <title>Ionic App</title>
+    <meta charset="utf-8" />
+    <title>Ionic App</title>
 
-  <base href="/" />
+    <base href="/" />
 
-  <meta name="color-scheme" content="light dark" />
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
 
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+    <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
 
-  <!-- add to homescreen for ios -->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!-- add to homescreen for ios -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <style>
+        body {
+            font-family: 'Sansation';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 13px;
+        }
+        
+        ion-content {
+            --background: #fff !important;
+        }
+        
+        ion-item {
+            --background: #fff !important;
+        }
+        
+        ion-toolbar {
+            --background: #fff !important;
+            --border-width: 0px !important;
+        }
+        
+        ion-header {
+            --background: #fff !important;
+        }
+        
+        ion-menu-button {
+            position: relative;
+            /* left: 86.36%;
+            right: 9.09%;
+            top: 10.15%;
+            bottom: 87.69%; */
+            /* background: #000000; */
+            transform: rotate(-180deg);
+        }
+        
+        ion-list {
+            background-color: #fff !important;
+        }
+        
+        ion-title {
+            font-family: Sansation;
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 27px;
+            letter-spacing: 0em;
+            text-align: center;
+            color: #000000;
+            position: relative;
+            right: 50px;
+        }
+        
+        .back {
+            /* position: relative; */
+            height: 20px;
+            width: 20px;
+            left: 50px;
+            top: 74px;
+            border-radius: 0px;
+        }
+        
+        ion-button {
+            --box-shadow: none !important;
+            --background: #E0163D;
+            --border-radius: 20px;
+        }
+        
+        ion-fab-button {
+            --background: #E0163D;
+        }
+    </style>
 </head>
 
 <body>
-  <app-root></app-root>
+    <app-root></app-root>
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase.js"></script>
 </body>
 
 </html>

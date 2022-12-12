@@ -1,0 +1,42 @@
+<ion-header style="z-index:0;">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button>
+                <img src="assets/images/menu.png" />
+            </ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+            Products
+        </ion-title>
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-item>
+        <ion-label position="stacked">Shop</ion-label>
+        <ion-select (ionChange)="onShopChanged($event)" [(ngModel)]="selectedShop">
+            <ion-select-option [value]="key" *ngFor="let key of keys">{{obj[key].shopName}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-grid>
+        <ion-row>
+            <div style="padding: 10px;" *ngFor="let key of proKeys">
+                <ion-col *ngIf="proObj[key].status == '1'">
+                    <ion-img [src]="proObj[key].imgPath"></ion-img>
+                    <div>
+                        <ion-label>{{proObj[key].proName}}<br /><i><b>{{proObj[key].proDescription}}</b></i><br />₱{{proObj[key].price}}</ion-label>
+                    </div>
+                    <ion-button (click)="goto('/addproduct',proObj[key],key)" size="small">Edit</ion-button>
+
+                    <ion-button (click)="removeProduct(proObj[key],key)" size="small">Delete</ion-button>
+                </ion-col>
+            </div>
+        </ion-row>
+    </ion-grid>
+    <ion-fab (click)="goto('/addproduct')" slot="fixed" horizontal="end" vertical="bottom">
+        <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

@@ -1,0 +1,61 @@
+<ion-header style="z-index: 0;">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+
+            <ion-img (click)="back()" class="back" src="assets/images/back.png"></ion-img>
+        </ion-buttons>
+        <ion-title></ion-title>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding">
+    <ion-img [src]="orderDetails['product'].imgPath"></ion-img>
+    <ion-grid>
+        <ion-row>
+            <ion-col style="text-align: left;">Ordered On {{orderDetails['timestamp']}}</ion-col>
+
+            <ion-col style="text-align: right;">Order ID {{orderDetails['id']}}</ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col style="text-align: left;font-size: 20px;">
+                <b>{{orderDetails['product'].proName}}</b>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col style="text-align: left;color: #E0163D;
+            ">₱{{orderDetails['product']['price']}}</ion-col>
+
+            <ion-col style="text-align: right;">
+                Qty <b>{{orderDetails['qty']}}</b>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <br />
+    <ion-grid>
+        <ion-row>
+            <ion-col style="text-align: left;font-size: 20px;color: rgba(0, 0, 0, 0.5);
+            ">SHIPPING ADDRESS</ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col style="color: rgba(0, 0, 0, 1);
+          ">{{orderDetails['username']}}</ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col style="color: rgba(0, 0, 0, 0.7);
+          ">{{orderDetails['shippingAddress']}}</ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col style="color: rgba(0, 0, 0, 0.7);
+        ">{{orderDetails['customerMobile']}}
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-item lines="none">
+
+        <ion-select placeholder="select rider" slot="end">
+            <ion-select-option></ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-button expand="full">Confirm Order</ion-button>
+</ion-content>

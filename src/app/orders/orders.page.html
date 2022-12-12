@@ -1,0 +1,60 @@
+<ion-header style="z-index:0;">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button>
+                <img src="assets/images/menu.png" />
+            </ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+            Orders
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-img src="assets/images/sort.png"></ion-img>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card (click)=" goto('/orderdetails',ordersObj[id],id)" *ngFor="let id of orderIds">
+        <ion-card-header>
+            <ion-card-title>{{ordersObj[id]['product']['proName']}}</ion-card-title>
+            <ion-card-subtitle style="color: #E0163D;
+            ">₱{{ordersObj[id]['product']['price']}}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-list>
+                <ion-item lines="none">
+                    <ion-thumbnail slot="start">
+                        <img [src]="ordersObj[id]['product']['imgPath']" />
+                    </ion-thumbnail>
+                    <ion-text>
+                        <p>
+                            <ion-label>{{ordersObj[id]['product']['proDescription']}}</ion-label>
+                        </p>
+                        <p>
+                            <ion-label>Ordered at {{ordersObj[id]['timestamp']}}</ion-label>
+                        </p>
+                        <p>
+                            <ion-label>Order ID <b>{{id}}</b></ion-label>
+                        </p>
+
+                    </ion-text>
+
+                </ion-item>
+            </ion-list>
+            <ion-grid style="text-align: center;">
+                <ion-row>
+                    <ion-col>Product Id<br />
+                        <b>{{ordersObj[id]['proId']}}</b>
+                    </ion-col>
+                    <ion-col>Qty<br />
+                        <b>{{ordersObj[id]['qty']}}</b></ion-col>
+                    <ion-col></ion-col>
+                    <ion-col>Status<br />
+                        <b [ngStyle]="ordersObj[id]['status'] == 'approved'?{'color':'#228C22'}:{'color':'#E0163D'}">{{ordersObj[id]['status']}}</b></ion-col>
+                    <ion-col></ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+</ion-content>
