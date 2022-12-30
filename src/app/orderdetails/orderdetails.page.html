@@ -54,7 +54,7 @@
     <ion-item lines="none">
 
         <ion-select placeholder="select rider" slot="end">
-            <ion-select-option></ion-select-option>
+            <ion-select-option *ngFor="let key of ridersKeys" [value]="key">{{riders[key].name}}</ion-select-option>
         </ion-select>
     </ion-item>
     <ion-button expand="full">Confirm Order</ion-button>

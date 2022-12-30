@@ -181,6 +181,27 @@ config: any = environment.firebaseConfig;
      })
     })
   }
+
+  //getting riders
+
+  getRiders(fn:any)
+  {
+    this.loader.create({
+      message: "please wait..."
+    }).then((ele) => {
+
+      ele.present();
+      this.email = this.email.replace(/[^a-zA-Z0-9 ]/g, '');
+      firebase.database().ref(this.appname + "/riders/"+this.email).once('value').then((snapshot1) => {
+        ele.dismiss();
+        fn(snapshot1.val());
+      },(err)=>{
+        console.log(err);
+        fn(err);
+       ele.dismiss();
+     })
+    })
+  }
   
   showToast(msg:any) {
 

@@ -28,7 +28,7 @@
                         <ion-label style="font-size:14px;" slot="start">Shop ID<br /><b>{{key}}</b></ion-label>
                         <ion-label style="font-size:14px;" slot="end">Status<br /><b style="color:green;">Active</b></ion-label>
                     </ion-item>
-                    <ion-button size="small">View</ion-button>
+                    <ion-button (click)="goto('/shop-details',obj[key],key)" size="small">View</ion-button>
                     <ion-button (click)="goto('/addshop',obj[key],key)" size="small">Edit</ion-button>
 
                     <ion-button (click)="removeShop(obj[key],key)" size="small">Delete</ion-button>
