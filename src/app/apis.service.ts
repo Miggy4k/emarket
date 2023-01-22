@@ -5,6 +5,9 @@ import { environment } from "../environments/environment";
 import { Platform, LoadingController, ToastController, AlertController } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 import {Router,NavigationExtras} from "@angular/router";
+import { Observable } from 'rxjs';
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@awesome-cordova-plugins/native-geocoder/ngx';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,25 +15,41 @@ import {Router,NavigationExtras} from "@angular/router";
 export class ApisService {
 config: any = environment.firebaseConfig;
   appname: any = environment.appname;
-  email: string = "";
-  role: string = "";
+  static email: string = "";
+  static role: string = "";
   token:any={};
-  constructor(private platform: Platform,private storage:Storage,private loader:LoadingController,private toast:ToastController,private router:Router,private location:Location) { 
+  usertype: any;
+  constructor(private platform: Platform,private storage:Storage,private loader:LoadingController,private toast:ToastController,private router:Router,private location:Location,private geocoder:NativeGeocoder) { 
      this.platform.ready().then(() => {
      
       if (firebase.apps.length == 0) {
         firebase.initializeApp(this.config);
 
       }
-      this.storage.get("token").then((token) => {
-        this.token = token;
-        this.email = "niks9489@gmail.com";
-        this.token = "admin";
-      })
+      this.setToken();
+     
 
     })
   }
 
+  setToken()
+  {
+    return new Promise((resolve,response)=>{
+
+    
+     this.storage.get("token").then((token) => {
+        if(token)
+        {
+          console.log(token);
+        this.token = token;
+        ApisService.email = token.email;
+        this.usertype = token.type;
+        resolve("");
+        }
+      })
+    })
+  }
+   
   //shop insertion , deletion ,updation
 
    manageShops(obj:any,  key:any, fn:any) {
@@ -39,8 +58,13 @@ config: any = environment.firebaseConfig;
     }).then((ele) => {
 
       ele.present();
-      
-      firebase.database().ref(this.appname + "/shops/" + this.email.replace(/[^\w\s]/gi, '') + "/" + key).set(obj).then(() => {
+      this.AddressToGps(obj.location).then((res:any)=>{
+        alert(res);
+       let arr = res.split(',');
+       obj.lat = arr[0];
+       obj.lng = arr[1];
+       alert(ApisService.email);
+      firebase.database().ref(this.appname + "/shops/" + ApisService.email.replace(/[^\w\s]/gi, '') + "/" + key).set(obj).then(() => {
         ele.dismiss();
 
 
@@ -52,6 +76,10 @@ config: any = environment.firebaseConfig;
         this.showToast(JSON.stringify(err));
 
       })
+    },(err)=>{
+      ele.dismiss();
+      this.showToast(JSON.stringify(err));
+    })
     })
    }
 //getting shop details
@@ -61,8 +89,8 @@ config: any = environment.firebaseConfig;
        message:"please wait..."
      }).then((ele)=>{
        ele.present();
-     this.email = this.email.replace(/[^a-zA-Z0-9 ]/g, '');
-     firebase.database().ref(this.appname + "/shops/"+this.email).once('value').then((snapshot1) => {
+     ApisService.email = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
+     firebase.database().ref(this.appname + "/shops/"+ApisService.email).once('value').then((snapshot1) => {
        ele.dismiss();
        fn(snapshot1.val());
      },(err)=>{
@@ -82,7 +110,7 @@ config: any = environment.firebaseConfig;
 
       ele.present();
       
-      firebase.database().ref(this.appname + "/shops/" + this.email.replace(/[^\w\s]/gi, '') + "/" + shopid+"/products/"+key).set(obj).then(() => {
+      firebase.database().ref(this.appname + "/shops/" + ApisService.email.replace(/[^\w\s]/gi, '') + "/" + shopid+"/products/"+key).set(obj).then(() => {
         ele.dismiss();
 
 
@@ -105,8 +133,8 @@ config: any = environment.firebaseConfig;
     //   message:"please wait..."
     // }).then((ele)=>{
     //   ele.present();
-    this.email = this.email.replace(/[^a-zA-Z0-9 ]/g, '');
-    firebase.database().ref(this.appname + "/shops/"+this.email+"/"+shopId+"/products/"+proId).once('value').then((snapshot1) => {
+    ApisService.email = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
+    firebase.database().ref(this.appname + "/shops/"+ApisService.email+"/"+shopId+"/products/"+proId).once('value').then((snapshot1) => {
       //ele.dismiss();
       fn(snapshot1.val());
     },(err)=>{
@@ -125,8 +153,8 @@ config: any = environment.firebaseConfig;
     }).then((ele) => {
 
       ele.present();
-      this.email = this.email.replace(/[^a-zA-Z0-9 ]/g, '');
-      firebase.database().ref(this.appname + "/orders/"+this.email).once('value').then((snapshot1) => {
+      ApisService.email = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
+      firebase.database().ref(this.appname + "/orders/"+ApisService.email).once('value').then((snapshot1) => {
         ele.dismiss();
         fn(snapshot1.val());
       },(err)=>{
@@ -145,7 +173,7 @@ config: any = environment.firebaseConfig;
 
       ele.present();
       
-      firebase.database().ref(this.appname + "/banners/" + this.email.replace(/[^\w\s]/gi, '') + "/" + id).set(obj).then(() => {
+      firebase.database().ref(this.appname + "/banners/" + ApisService.email.replace(/[^\w\s]/gi, '') + "/" + id).set(obj).then(() => {
         ele.dismiss();
 
 
@@ -170,8 +198,8 @@ config: any = environment.firebaseConfig;
     }).then((ele) => {
 
       ele.present();
-      this.email = this.email.replace(/[^a-zA-Z0-9 ]/g, '');
-      firebase.database().ref(this.appname + "/banners/"+this.email).once('value').then((snapshot1) => {
+      ApisService.email = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
+      firebase.database().ref(this.appname + "/banners/"+ApisService.email).once('value').then((snapshot1) => {
         ele.dismiss();
         fn(snapshot1.val());
       },(err)=>{
@@ -191,12 +219,56 @@ config: any = environment.firebaseConfig;
     }).then((ele) => {
 
       ele.present();
-      this.email = this.email.replace(/[^a-zA-Z0-9 ]/g, '');
-      firebase.database().ref(this.appname + "/riders/"+this.email).once('value').then((snapshot1) => {
+      ApisService.email = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
+      firebase.database().ref(this.appname + "/riders/"+ApisService.email).once('value').then((snapshot1) => {
         ele.dismiss();
         fn(snapshot1.val());
       },(err)=>{
         console.log(err);
+        fn(err);
+       ele.dismiss();
+     })
+    })
+  }
+  //manage riders
+  manageRider(obj:any,id:any,fn:any)
+  {
+    this.loader.create({
+      message: "please wait..."
+    }).then((ele) => {
+
+      ele.present();
+      
+      firebase.database().ref(this.appname + "/riders/" + ApisService.email.replace(/[^\w\s]/gi, '') + "/" + id).set(obj).then(() => {
+        ele.dismiss();
+
+
+        fn("ok");
+        
+
+
+      }, (err) => {
+        ele.dismiss();
+        this.showToast(JSON.stringify(err));
+
+      })
+    })
+  }
+
+  //login
+  login(email:any,fn:any)
+  {
+    this.loader.create({
+      message: "please wait..."
+    }).then((ele) => {
+
+      ele.present();
+      
+      firebase.database().ref(this.appname + "/users/" + email.replace(/[^\w\s]/gi, '') + "/").once('value').then((snapshot1) => {
+        ele.dismiss();
+        fn(snapshot1.val());
+      },(err)=>{
+       
         fn(err);
        ele.dismiss();
      })
@@ -269,6 +341,25 @@ this.router.navigate([url],navigationExtras);
   back()
   {
     this.location.back();
+  }
+
+  AddressToGps(address:string)
+  {
+    return new Promise((resolve,error)=>{
+
+    
+    this.geocoder.forwardGeocode(address).then((res:NativeGeocoderResult[])=>{
+        if(res)
+        {
+           resolve(res[0].latitude.toString()+","+res[0].longitude.toString())
+        }
+        else{
+error("unable to get gps");
+        }
+    },(err)=>{
+error(err);
+    })
+  })
   }
 
 }

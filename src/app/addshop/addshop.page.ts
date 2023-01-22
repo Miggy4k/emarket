@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {ApisService } from "../apis.service";
 import {Camera,ImageOptions,CameraResultType,CameraSource} from "@capacitor/camera";
 import {ActivatedRoute} from "@angular/router";
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@awesome-cordova-plugins/native-geocoder/ngx';
+
+
 
 @Component({
   selector: 'app-addshop',
@@ -10,9 +13,9 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class AddshopPage implements OnInit {
   base64:any;
-  shopObj:any={imgPath:"",shopName:"",shopDescription:"",category:"",location:"",status:0};
+  shopObj:any={imgPath:"",shopName:"",shopDescription:"",category:"",location:"",status:0,lat:"",lng:""};
   btnText:string="Add";
-  constructor(private api:ApisService,private activatedRoute:ActivatedRoute) { }
+  constructor(private api:ApisService,private activatedRoute:ActivatedRoute,private geocoder:NativeGeocoder) { }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params)=>{
@@ -81,7 +84,7 @@ this.base64 = val.dataUrl;
       {
         ref.api.showToast("successfully updated!");
 
-        ref.shopObj = {imgPath:"",shopName:"",shopDescription:"",category:"",location:"",status:0};
+        ref.shopObj = {imgPath:"",shopName:"",shopDescription:"",category:"",location:"",status:0,lat:"",lng:""};
       })
     }
       }

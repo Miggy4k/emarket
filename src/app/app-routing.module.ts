@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'orders',
+    redirectTo: 'splash',
     pathMatch: 'full'
   },
   {
@@ -50,6 +50,26 @@ const routes: Routes = [
   {
     path: 'shop-details',
     loadChildren: () => import('./shop-details/shop-details.module').then( m => m.ShopDetailsPageModule)
+  },
+  {
+    path: 'tripinfo',
+    loadChildren: () => import('./tripinfo/tripinfo.module').then( m => m.TripinfoPageModule)
+  },
+  {
+    path: 'rider',
+    loadChildren: () => import('./rider/rider.module').then( m => m.RiderPageModule)
+  },
+  {
+    path: 'splash',
+    loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
 ];
 

@@ -45,7 +45,7 @@ export class AppComponent {
         {
           icon:"assets/images/track.png",
           title:"Track Rider",
-          url:"/track"
+          url:"/tripinfo"
         },
         {
           icon:"assets/images/insights.png",
@@ -56,7 +56,12 @@ export class AppComponent {
           icon:"assets/images/banner.png",
           title:"Banner",
           url:"/banner"
-        }
+        },
+        {
+          icon:"assets/images/track.png",
+          title:"Rider",
+          url:"/rider"
+        },
         
        
       ]
