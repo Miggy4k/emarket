@@ -7,7 +7,7 @@
     <form #f="ngForm" (ngSubmit)="onSubmit(f)">
         <ion-list lines="none">
             <ion-item color="light" class="ion-margin-bottom">
-                <ion-icon name="mail" slot="start"></ion-icon>
+                <ion-icon color="danger" name="mail" slot="start"></ion-icon>
                 <ion-input type="email" name="email" ngModel email #emailCtrl="ngModel" placeholder="Email" required>
                 </ion-input>
             </ion-item>
@@ -15,8 +15,8 @@
                 <p class="errorMsg">* Please enter a valid email address</p>
             </ion-text>
             <ion-item color="light">
-                <ion-icon name="key" slot="start"></ion-icon>
-                <ion-icon slot="end" (click)="showPassword()" [name]="type ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+                <ion-icon color="danger" name="key" slot="start"></ion-icon>
+                <ion-icon color="danger" slot="end" (click)="showPassword()" [name]="type ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
                 <ion-input [type]="type ? 'password' : 'text'" name="password" ngModel #passwordCtrl="ngModel" placeholder="Password" required minlength="6">
                 </ion-input>
             </ion-item>
@@ -39,7 +39,7 @@
 
     </form>
 
-    <ion-text class="ion-text-center" routerLink="/login/signup">
+    <ion-text class="ion-text-center" routerLink="/register">
         <p class="marginTop">
             Don't have an account?
             <b>Sign Up</b>

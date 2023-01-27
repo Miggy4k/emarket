@@ -23,7 +23,13 @@ export class SplashPage implements OnInit {
           this.router.navigate(["/login"]);
         }
         else {
-          this.router.navigate(["/home"]);
+          if(token.type == "admin")
+          {
+          this.router.navigate(["/orders"]);
+          }
+          else if(token.type == "user"){
+            this.router.navigate(["/orders"]);
+          }
         }
 
         

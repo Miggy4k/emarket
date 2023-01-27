@@ -18,7 +18,7 @@ config: any = environment.firebaseConfig;
   static email: string = "";
   static role: string = "";
   token:any={};
-  usertype: any;
+  static usertype: any;
   constructor(private platform: Platform,private storage:Storage,private loader:LoadingController,private toast:ToastController,private router:Router,private location:Location,private geocoder:NativeGeocoder) { 
      this.platform.ready().then(() => {
      
@@ -29,6 +29,18 @@ config: any = environment.firebaseConfig;
       this.setToken();
      
 
+    })
+  }
+
+  getToken()
+  {
+    
+      return new Promise((resolve,response)=>{
+  
+      
+       this.storage.get("token").then((token) => {
+        resolve(token);
+      })
     })
   }
 
@@ -43,8 +55,11 @@ config: any = environment.firebaseConfig;
           console.log(token);
         this.token = token;
         ApisService.email = token.email;
-        this.usertype = token.type;
+        ApisService.usertype = token.type;
         resolve("");
+        }
+        else{
+          resolve("");
         }
       })
     })
@@ -63,7 +78,7 @@ config: any = environment.firebaseConfig;
        let arr = res.split(',');
        obj.lat = arr[0];
        obj.lng = arr[1];
-       alert(ApisService.email);
+      
       firebase.database().ref(this.appname + "/shops/" + ApisService.email.replace(/[^\w\s]/gi, '') + "/" + key).set(obj).then(() => {
         ele.dismiss();
 
@@ -89,6 +104,10 @@ config: any = environment.firebaseConfig;
        message:"please wait..."
      }).then((ele)=>{
        ele.present();
+       this.setToken().then(()=>{
+
+       if(ApisService.usertype == "admin")
+       {
      ApisService.email = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
      firebase.database().ref(this.appname + "/shops/"+ApisService.email).once('value').then((snapshot1) => {
        ele.dismiss();
@@ -98,6 +117,18 @@ config: any = environment.firebaseConfig;
        fn(err);
       ele.dismiss();
     })
+  }
+  else{
+    firebase.database().ref(this.appname + "/shops/").once('value').then((snapshot1) => {
+      ele.dismiss();
+      fn(snapshot1.val());
+    },(err)=>{
+      console.log(err);
+      fn(err);
+     ele.dismiss();
+   })
+  }
+  })
    })
    }
 
@@ -109,7 +140,7 @@ config: any = environment.firebaseConfig;
     }).then((ele) => {
 
       ele.present();
-      
+      this.setToken().then(()=>{
       firebase.database().ref(this.appname + "/shops/" + ApisService.email.replace(/[^\w\s]/gi, '') + "/" + shopid+"/products/"+key).set(obj).then(() => {
         ele.dismiss();
 
@@ -124,6 +155,7 @@ config: any = environment.firebaseConfig;
 
       })
     })
+    })
    }
 
    //getting single product
@@ -133,6 +165,7 @@ config: any = environment.firebaseConfig;
     //   message:"please wait..."
     // }).then((ele)=>{
     //   ele.present();
+    this.setToken().then(()=>{
     ApisService.email = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
     firebase.database().ref(this.appname + "/shops/"+ApisService.email+"/"+shopId+"/products/"+proId).once('value').then((snapshot1) => {
       //ele.dismiss();
@@ -142,6 +175,7 @@ config: any = environment.firebaseConfig;
       fn(err);
     // ele.dismiss();
    })
+  })
   //})
    }
 
@@ -153,8 +187,9 @@ config: any = environment.firebaseConfig;
     }).then((ele) => {
 
       ele.present();
+      this.setToken().then(()=>{
       ApisService.email = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
-      firebase.database().ref(this.appname + "/orders/"+ApisService.email).once('value').then((snapshot1) => {
+      firebase.database().ref(this.appname + "/orders/").once('value').then((snapshot1) => {
         ele.dismiss();
         fn(snapshot1.val());
       },(err)=>{
@@ -162,6 +197,63 @@ config: any = environment.firebaseConfig;
         fn(err);
        ele.dismiss();
      })
+    })
+    })
+   }
+   //manage orders
+
+   manageOrders(obj:any,id:any,fn:any)
+   {
+     this.loader.create({
+       message: "please wait..."
+     }).then((ele) => {
+ 
+       ele.present();
+
+       this.setToken().then(()=>{
+        obj["useremail"] = ApisService.email.replace(/[^\w\s]/gi, '');
+       firebase.database().ref(this.appname + "/orders/"  + id).set(obj).then(() => {
+         ele.dismiss();
+ 
+ 
+         fn("ok");
+         
+ 
+ 
+       }, (err) => {
+         ele.dismiss();
+         this.showToast(JSON.stringify(err));
+ 
+       })
+     })
+     })
+   }
+
+   //modify status of order
+   modifyStatusOfOrder(id:any,status:any,fn:any)
+   {
+    this.loader.create({
+      message: "please wait..."
+    }).then((ele) => {
+
+      ele.present();
+
+      this.setToken().then(()=>{
+       
+      firebase.database().ref(this.appname + "/orders/"  + id+"/status/").set(status).then(() => {
+        ele.dismiss();
+
+
+        fn("ok");
+        
+
+
+      }, (err) => {
+        ele.dismiss();
+        this.showToast(JSON.stringify(err));
+
+      })
+    })
     })
    }
   //banner insertion , remove
@@ -172,7 +264,7 @@ config: any = environment.firebaseConfig;
     }).then((ele) => {
 
       ele.present();
-      
+      this.setToken().then(()=>{
       firebase.database().ref(this.appname + "/banners/" + ApisService.email.replace(/[^\w\s]/gi, '') + "/" + id).set(obj).then(() => {
         ele.dismiss();
 
@@ -187,6 +279,7 @@ config: any = environment.firebaseConfig;
 
       })
     })
+    })
   }
 
   //getting banners
@@ -198,6 +291,7 @@ config: any = environment.firebaseConfig;
     }).then((ele) => {
 
       ele.present();
+      this.setToken().then(()=>{
       ApisService.email = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
       firebase.database().ref(this.appname + "/banners/"+ApisService.email).once('value').then((snapshot1) => {
         ele.dismiss();
@@ -207,6 +301,7 @@ config: any = environment.firebaseConfig;
         fn(err);
        ele.dismiss();
      })
+    })
     })
   }
 
@@ -219,6 +314,7 @@ config: any = environment.firebaseConfig;
     }).then((ele) => {
 
       ele.present();
+      this.setToken().then(()=>{
       ApisService.email = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
       firebase.database().ref(this.appname + "/riders/"+ApisService.email).once('value').then((snapshot1) => {
         ele.dismiss();
@@ -229,6 +325,7 @@ config: any = environment.firebaseConfig;
        ele.dismiss();
      })
     })
+    })
   }
   //manage riders
   manageRider(obj:any,id:any,fn:any)
@@ -238,7 +335,7 @@ config: any = environment.firebaseConfig;
     }).then((ele) => {
 
       ele.present();
-      
+      this.setToken().then(()=>{
       firebase.database().ref(this.appname + "/riders/" + ApisService.email.replace(/[^\w\s]/gi, '') + "/" + id).set(obj).then(() => {
         ele.dismiss();
 
@@ -253,6 +350,7 @@ config: any = environment.firebaseConfig;
 
       })
     })
+    })
   }
 
   //login
@@ -263,7 +361,7 @@ config: any = environment.firebaseConfig;
     }).then((ele) => {
 
       ele.present();
-      
+      this.setToken().then(()=>{
       firebase.database().ref(this.appname + "/users/" + email.replace(/[^\w\s]/gi, '') + "/").once('value').then((snapshot1) => {
         ele.dismiss();
         fn(snapshot1.val());
@@ -272,6 +370,33 @@ config: any = environment.firebaseConfig;
         fn(err);
        ele.dismiss();
      })
+    })
+    })
+  }
+
+  //register
+  manageUsers(obj:any,fn:any)
+  {
+    this.loader.create({
+      message: "please wait..."
+    }).then((ele) => {
+
+      ele.present();
+      this.setToken().then(()=>{
+      firebase.database().ref(this.appname + "/users/" + obj.email.replace(/[^\w\s]/gi, '')).set(obj).then(() => {
+        ele.dismiss();
+
+
+        fn("ok");
+        
+
+
+      }, (err) => {
+        ele.dismiss();
+        this.showToast(JSON.stringify(err));
+
+      })
+    })
     })
   }
   

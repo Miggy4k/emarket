@@ -29,14 +29,14 @@
                         <ion-label style="font-size:14px;" slot="end">Status<br /><b style="color:green;">Active</b></ion-label>
                     </ion-item>
                     <ion-button (click)="goto('/shop-details',obj[key],key)" size="small">View</ion-button>
-                    <ion-button (click)="goto('/addshop',obj[key],key)" size="small">Edit</ion-button>
+                    <ion-button *ngIf="token.type == 'admin'" (click)="goto('/addshop',obj[key],key)" size="small">Edit</ion-button>
 
-                    <ion-button (click)="removeShop(obj[key],key)" size="small">Delete</ion-button>
+                    <ion-button *ngIf="token.type == 'admin'" (click)="removeShop(obj[key],key)" size="small">Delete</ion-button>
                 </ion-list>
             </ion-card-content>
         </ion-card>
     </div>
-    <ion-fab (click)="goto('/addshop')" slot="fixed" horizontal="end" vertical="bottom">
+    <ion-fab *ngIf="token.type == 'admin'" (click)="goto('/addshop')" slot="fixed" horizontal="end" vertical="bottom">
         <ion-fab-button>
             <ion-icon name="add"></ion-icon>
         </ion-fab-button>

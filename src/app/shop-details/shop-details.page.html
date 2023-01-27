@@ -36,6 +36,10 @@
                             <ion-img [src]="proObj[key].imgPath"></ion-img>
                             <div>
                                 <ion-label>{{proObj[key].proName}}<br /><i><b>{{proObj[key].proDescription}}</b></i><br />₱{{proObj[key].price}}</ion-label>
+                                <ion-item *ngIf="token.type == 'user'">
+                                    <ion-label>Quantity:</ion-label>
+                                    <ion-input min="0" [(ngModel)]="proObj[key].qty" type="number"></ion-input>
+                                </ion-item>
                             </div>
 
                         </ion-col>
@@ -51,6 +55,10 @@
                             <ion-img [src]="proObj[key].imgPath"></ion-img>
                             <div>
                                 <ion-label>{{proObj[key].proName}}<br /><i><b>{{proObj[key].proDescription}}</b></i><br />₱{{proObj[key].price}}</ion-label>
+                                <ion-item *ngIf="token.type == 'user'">
+                                    <ion-label>Quantity:</ion-label>
+                                    <ion-input min="0" [(ngModel)]="proObj[key].qty" type="number"></ion-input>
+                                </ion-item>
                             </div>
 
                         </ion-col>
@@ -60,3 +68,8 @@
         </div>
     </div>
 </ion-content>
+<ion-footer *ngIf="token.type == 'user'">
+    <ion-toolbar>
+        <ion-button (click)=" placeOrder()" expand="full">submit</ion-button>
+    </ion-toolbar>
+</ion-footer>

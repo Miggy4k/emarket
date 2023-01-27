@@ -10,9 +10,12 @@ import {ApisService} from "../apis.service";
 export class OrdersPage implements OnInit {
 orderIds:any[]=[];
 ordersObj:any = {};
+userType = ApisService.usertype;
+email = ApisService.email;
   constructor(private api:ApisService) { }
 
   ngOnInit() {
+    
   }
   ionViewWillEnter()
   {
@@ -27,12 +30,17 @@ ordersObj:any = {};
       
       if(res)
       {
+        console.log(res);
+        console.log(ApisService.email);
+        console.log(ApisService.usertype);
+        ref.email = ApisService.email;
+        ref.userType = ApisService.usertype;
         ref.ordersObj = res;
         ref.orderIds = Object.keys(res);
-        for(var i = 0;i<ref.orderIds.length;i++)
-        {
-           ref.getSingleProduct(ref.ordersObj[ref.orderIds[i]]["shopId"],ref.ordersObj[ref.orderIds[i]]["proId"],ref.orderIds[i])
-        }
+        // for(var i = 0;i<ref.orderIds.length;i++)
+        // {
+        //    ref.getSingleProduct(ref.ordersObj[ref.orderIds[i]]["shopId"],ref.ordersObj[ref.orderIds[i]]["proId"],ref.orderIds[i])
+        // }
       }
     })
   }
@@ -54,6 +62,17 @@ ordersObj:any = {};
     data["id"] = id;
   }
   this.api.goto(url,data);
+}
+
+modifyStatus(id:any,status:any)
+{
+  let ref = this;
+  this.api.modifyStatusOfOrder(id,status,function()
+  {
+    ref.api.showToast("status updated !");
+    ref.getOrders();
+  })
+
 }
 
 }

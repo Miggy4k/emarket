@@ -3,6 +3,8 @@ import {ApisService } from "../apis.service";
 import {AlertController} from "@ionic/angular";
 
 
+
+
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.page.html',
@@ -11,6 +13,7 @@ import {AlertController} from "@ionic/angular";
 export class ShopPage implements OnInit {
 keys:any[]=[];
 obj:any = {};
+token:any = {};
   constructor(private api:ApisService,private alertCtrl:AlertController) { }
 
   ngOnInit() {
@@ -18,7 +21,11 @@ obj:any = {};
   }
   ionViewWillEnter()
   {
+    this.api.getToken().then((token:any)=>
+    {
+      this.token= token;
     this.getShops();
+    })
   }
 
   getShops()
@@ -26,7 +33,11 @@ obj:any = {};
     let ref = this;
     this.api.getShops(function(res:any)
     {
-      
+      console.log(res);
+    
+
+      if(ref.token.type == "admin")
+      {
       if(res)
       {
       ref.keys = Object.keys(res);
@@ -37,7 +48,35 @@ obj:any = {};
         ref.keys = [];
       ref.obj = {};
       }
+    }
+    else{
+      if(res)
+      {
+        let k = Object.keys(res);
+        let obj:any = {};
+       for(var i = 0;i<k.length;i++)
+       {
+         let objtemp = res[k[i]];
+         let ktemp = Object.keys(objtemp);
+        for(let j = 0;j<ktemp.length;j++)
+        {
+          objtemp[ktemp[j]]["adminemail"] = k[i]
+          obj[ktemp[j]] = objtemp[ktemp[j]];
+        }
+       }
+       console.log(obj);
+      ref.keys = Object.keys(obj);
+      ref.obj = obj;
+      
+      }
+      else{
+        ref.keys = [];
+      ref.obj = {};
+      }
+       
+    }
     })
+    
   }
  
   goto(url:any,data ?:any,key?:any)

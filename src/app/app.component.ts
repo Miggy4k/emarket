@@ -15,6 +15,7 @@ import {MenuController,ModalController} from "@ionic/angular";
 export class AppComponent {
   navigate:any[] = [];
    admin:boolean = false;
+   username:string="";
   constructor(
     private platform: Platform,
    
@@ -24,6 +25,8 @@ export class AppComponent {
     private modal: ModalController)
   {
     this.platform.ready().then(() => {
+      if(this.admin)
+      {
         this.navigate = [
        
         {
@@ -65,6 +68,25 @@ export class AppComponent {
         
        
       ]
+    }
+    else{
+      this.navigate = [
+       
+        {
+          icon:"assets/images/orders.png",
+          title:"Orders",
+          url:"/orders"
+          },
+         {
+          icon:"assets/images/shop.png",
+          title:"Shop",
+          url:"/shop"
+          }
+       
+        
+       
+      ]
+    }
     })
   }
 
@@ -81,15 +103,77 @@ export class AppComponent {
 
   onMenuOpen()
   {
-   this.storage.get("type").then((res)=>{
-     console.log(res);
-     if(res)
-     {
-       this.admin = false;
-     }
-     else{
-       this.admin = true;
-     }
+   
+   this.storage.get("token").then((token)=>{
+    if(token)
+    {
+      this.username = token.name;
+      if(token.type == "admin")
+      {
+        this.admin = true;
+        this.navigate = [
+       
+          {
+            icon:"assets/images/orders.png",
+            title:"Orders",
+            url:"/orders"
+            },
+           {
+            icon:"assets/images/shop.png",
+            title:"Shop",
+            url:"/shop"
+            },
+           {
+            icon:"assets/images/products.png",
+            title:"Products",
+            url:"/products"
+          },
+          
+          {
+            icon:"assets/images/track.png",
+            title:"Track Rider",
+            url:"/tripinfo"
+          },
+          {
+            icon:"assets/images/insights.png",
+            title:"Insights",
+            url:"/insights"
+          },
+          {
+            icon:"assets/images/banner.png",
+            title:"Banner",
+            url:"/banner"
+          },
+          {
+            icon:"assets/images/track.png",
+            title:"Rider",
+            url:"/rider"
+          },
+          
+         
+        ]
+      }
+      else
+      {
+        this.admin = false;
+        this.navigate = [
+       
+          {
+            icon:"assets/images/orders.png",
+            title:"Orders",
+            url:"/orders"
+            },
+           {
+            icon:"assets/images/shop.png",
+            title:"Shop",
+            url:"/shop"
+            }
+         
+          
+         
+        ]
+      }
+    }
    })
   }
 
