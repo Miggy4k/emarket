@@ -124,4 +124,14 @@ navigate(orderId:any)
   window.open(url);
 }
 
+getCustomerDetails(orderId:any)
+{
+let ref = this;
+this.api.login(this.ordersObj[orderId].useremail,function(res:any)
+{
+  let str = "Name:"+res.name+"<br /><br />Email:"+res.email+"<br /><br />Mobile:"+res.mobile;
+  ref.api.showAlert(str);
+})
+}
+
 }

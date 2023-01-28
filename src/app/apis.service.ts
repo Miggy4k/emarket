@@ -20,7 +20,7 @@ config: any = environment.firebaseConfig;
   static role: string = "";
   token:any={};
   static usertype: any;
-  constructor(private platform: Platform,private storage:Storage,private loader:LoadingController,private toast:ToastController,private router:Router,private location:Location,private geocoder:NativeGeocoder) { 
+  constructor(private platform: Platform,private storage:Storage,private loader:LoadingController,private toast:ToastController,private router:Router,private location:Location,private geocoder:NativeGeocoder,private alertCtrl:AlertController) { 
      this.platform.ready().then(() => {
      
       if (firebase.apps.length == 0) {
@@ -526,6 +526,19 @@ error("unable to get gps");
 error(err);
     })
   })
+  }
+
+  showAlert(msg:string)
+  {
+   this.alertCtrl.create({
+    message:msg,
+    backdropDismiss:false,
+    buttons:[{
+      text:"ok"
+    }]
+   }).then((ele)=>{
+    ele.present();
+   })
   }
 
 }
