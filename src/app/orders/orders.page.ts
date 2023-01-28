@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ChangeDetectorRef} from '@angular/core';
 
 import {ApisService} from "../apis.service";
 
@@ -12,7 +12,10 @@ orderIds:any[]=[];
 ordersObj:any = {};
 userType = ApisService.usertype;
 email = ApisService.email;
-  constructor(private api:ApisService) { }
+riderObj:any={};
+riderKeys:any[]=[];
+selectedRider:any = "";
+  constructor(private api:ApisService,private change:ChangeDetectorRef) { }
 
   ngOnInit() {
     
@@ -20,6 +23,7 @@ email = ApisService.email;
   ionViewWillEnter()
   {
     this.getOrders();
+    
   }
 
   getOrders()
@@ -30,17 +34,18 @@ email = ApisService.email;
       
       if(res)
       {
-        console.log(res);
-        console.log(ApisService.email);
-        console.log(ApisService.usertype);
+        
         ref.email = ApisService.email;
         ref.userType = ApisService.usertype;
         ref.ordersObj = res;
         ref.orderIds = Object.keys(res);
+        console.log(res);
         // for(var i = 0;i<ref.orderIds.length;i++)
         // {
         //    ref.getSingleProduct(ref.ordersObj[ref.orderIds[i]]["shopId"],ref.ordersObj[ref.orderIds[i]]["proId"],ref.orderIds[i])
         // }
+        ref.getRiders();
+
       }
     })
   }
@@ -64,15 +69,59 @@ email = ApisService.email;
   this.api.goto(url,data);
 }
 
-modifyStatus(id:any,status:any)
+modifyStatus(id:any,status:any,orderId:any)
 {
+  if(this.ordersObj[orderId].rideremail)
+  {
   let ref = this;
   this.api.modifyStatusOfOrder(id,status,function()
   {
     ref.api.showToast("status updated !");
+    if(ref.userType == "admin")
+    {
+    ref.assignRider(orderId);
+    }
+    else{
     ref.getOrders();
+    }
   })
+}
+else{
+  this.api.showToast("please select any rider");
+}
 
+}
+
+getRiders()
+{
+  let ref = this;
+  this.api.getRiders(function(res:any)
+  {
+     console.log(res);
+     if(res)
+     {
+      ref.riderKeys = Object.keys(res);
+      ref.riderObj = res;
+      ref.change.detectChanges();
+     }
+  })
+}
+assignRider(orderId:any)
+{
+let ref = this;
+this.api.assignRider(this.ordersObj[orderId].rideremail,orderId,function()
+{
+  ref.api.showToast("rider assigned");
+  ref.getOrders();
+})
+}
+
+
+navigate(orderId:any)
+{
+  var url = "https://www.google.com/maps/dir/?api=1&travelmode=walking&dir_action=navigate&destination="+this.ordersObj[orderId].userlat+","+this.ordersObj[orderId].userlng;
+  // alert(url);
+  window.open(url);
 }
 
 }

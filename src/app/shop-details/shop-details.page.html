@@ -33,13 +33,16 @@
                 <ion-row>
                     <div style="padding: 10px;" *ngFor="let key of proKeys">
                         <ion-col *ngIf="proObj[key].status == '1' && proObj[key].category == 'foods'">
-                            <ion-img [src]="proObj[key].imgPath"></ion-img>
+                            <ion-img style="width: 150px;" [src]="proObj[key].imgPath"></ion-img>
                             <div>
                                 <ion-label>{{proObj[key].proName}}<br /><i><b>{{proObj[key].proDescription}}</b></i><br />₱{{proObj[key].price}}</ion-label>
                                 <ion-item *ngIf="token.type == 'user'">
-                                    <ion-label>Quantity:</ion-label>
-                                    <ion-input min="0" [(ngModel)]="proObj[key].qty" type="number"></ion-input>
+                                    <!-- <ion-label>Quantity:</ion-label> -->
+                                    <ion-icon (click)="addQty(key)" color="danger" slot="start" name="add-circle"></ion-icon>
+                                    <ion-input style="width: 50px;" min="0" [(ngModel)]="proObj[key].qty" type="number"></ion-input>
+                                    <ion-icon (click)="minusQty(key)" color="danger" slot="end" name="remove-circle"></ion-icon>
                                 </ion-item>
+
                             </div>
 
                         </ion-col>
@@ -52,12 +55,15 @@
                 <ion-row>
                     <div style="padding: 10px;" *ngFor="let key of proKeys">
                         <ion-col *ngIf="proObj[key].status == '1' && proObj[key].category == 'drinks'">
-                            <ion-img [src]="proObj[key].imgPath"></ion-img>
+                            <ion-img style="width: 150px;" [src]="proObj[key].imgPath"></ion-img>
                             <div>
                                 <ion-label>{{proObj[key].proName}}<br /><i><b>{{proObj[key].proDescription}}</b></i><br />₱{{proObj[key].price}}</ion-label>
                                 <ion-item *ngIf="token.type == 'user'">
-                                    <ion-label>Quantity:</ion-label>
-                                    <ion-input min="0" [(ngModel)]="proObj[key].qty" type="number"></ion-input>
+                                    <!-- <ion-label>Quantity:</ion-label>
+                                    <ion-input min="0" [(ngModel)]="proObj[key].qty" type="number"></ion-input> -->
+                                    <ion-icon (click)="addQty(key)" color="danger" slot="start" name="add-circle"></ion-icon>
+                                    <ion-input style="width: 50px;" min="0" [(ngModel)]="proObj[key].qty" type="number"></ion-input>
+                                    <ion-icon (click)="minusQty(key)" color="danger" slot="end" name="remove-circle"></ion-icon>
                                 </ion-item>
                             </div>
 

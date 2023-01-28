@@ -153,7 +153,7 @@ export class AppComponent {
          
         ]
       }
-      else
+      else if(token.type == "user")
       {
         this.admin = false;
         this.navigate = [
@@ -168,6 +168,21 @@ export class AppComponent {
             title:"Shop",
             url:"/shop"
             }
+         
+          
+         
+        ]
+      }
+      else{
+        this.admin = false;
+        this.navigate = [
+       
+          {
+            icon:"assets/images/orders.png",
+            title:"Orders",
+            url:"/orders"
+            }
+           
          
           
          

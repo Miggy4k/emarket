@@ -51,6 +51,7 @@
                     </ion-list>
 
                 </ion-card-content>
+
             </ion-card>
         </div>
     </div>
@@ -88,7 +89,80 @@
 
                         </ion-item>
                     </ion-list>
-                    <ion-button (click)="modifyStatus(id,'approved')" *ngIf="ordersObj[id]['status'] == 'pending'" expand="full">Approved</ion-button>
+                    <ion-grid>
+                        <ion-row *ngIf="ordersObj[id]['status'] == 'pending'">
+                            <ion-col>
+                                <ion-item lines="none">
+
+                                    <ion-select [(ngModel)]="ordersObj[id]['rideremail']
+                                    " placeholder="select rider" slot="end">
+                                        <div *ngFor="let key of riderKeys">
+                                            <ion-select-option *ngIf="riderObj[key].type == 'rider'" [value]="key">{{riderObj[key].name}}</ion-select-option>
+                                        </div>
+                                    </ion-select>
+                                </ion-item>
+                                <!-- <ion-button (click)="modifyStatus(id,'approved')" *ngIf="ordersObj[id]['status'] == 'pending'" expand="full">Approved</ion-button> -->
+                            </ion-col>
+                            <ion-col>
+                                <ion-button (click)="modifyStatus(id,'confirmed',id)" expand="full">Confirm</ion-button>
+                            </ion-col>
+
+                        </ion-row>
+
+                    </ion-grid>
+
+                </ion-card-content>
+            </ion-card>
+        </div>
+    </div>
+    <div *ngIf="userType == 'rider'">
+        <div *ngFor="let id of orderIds">
+            <ion-card *ngIf="email == ordersObj[id].rideremail">
+                <ion-card-header>
+                    <ion-card-title>#{{id}} <b [ngStyle]="ordersObj[id]['status'] != 'pending'?{'color':'#228C22'}:{'color':'#E0163D'}">{{(ordersObj[id]['status'])}}</b></ion-card-title>
+                    <ion-card-subtitle>{{ordersObj[id]['shopName']}}</ion-card-subtitle>
+                    <ion-card-subtitle style="color: #E0163D;
+            ">₱{{ordersObj[id]['totalPrice']}}</ion-card-subtitle>
+
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-list>
+                        <ion-item *ngFor="let item of ordersObj[id]['items']">
+                            <ion-thumbnail slot="start">
+                                <img [src]="item['imgPath']" />
+                            </ion-thumbnail>
+                            <ion-text>
+                                <p>
+                                    <ion-label>{{item['proName']}}</ion-label>
+                                </p>
+                                <p>
+                                    <ion-label>{{item['proDescription']}}</ion-label>
+                                </p>
+                                <p>
+                                    <ion-label>Quantity:<b>{{item['qty']}}</b></ion-label>
+                                </p>
+                                <p>
+                                    <ion-label>Price:<b>{{item['price']}}</b></ion-label>
+                                </p>
+
+                            </ion-text>
+
+                        </ion-item>
+                    </ion-list>
+                    <ion-grid>
+                        <ion-row *ngIf="userType == 'rider'">
+                            <ion-col size="6">
+
+                                <ion-button (click)="navigate(id)" expand="full">Navigate</ion-button>
+                            </ion-col>
+                            <ion-col size="6">
+                                <ion-button (click)="modifyStatus(id,'completed',id)" expand="full">Mark As Done</ion-button>
+                            </ion-col>
+
+                        </ion-row>
+
+                    </ion-grid>
+
                 </ion-card-content>
             </ion-card>
         </div>

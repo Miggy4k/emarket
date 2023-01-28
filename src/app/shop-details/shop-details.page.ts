@@ -62,7 +62,10 @@ export class ShopDetailsPage implements OnInit {
       orderObj["status"] = "pending";
       orderObj["totalPrice"] = this.totalPrice;
       orderObj["adminemail"] = this.shopInfo.adminemail;
+      orderObj["rideremail"] = "";
       orderObj["shopName"] = this.shopInfo.shopName;
+      orderObj["shoplat"] = this.shopInfo.lat;
+      orderObj["shoplng"] = this.shopInfo.lng;
       let ref = this;
       this.api.manageOrders(orderObj,Date.now().toString(),function()
       {
@@ -80,6 +83,34 @@ export class ShopDetailsPage implements OnInit {
   back()
 {
   this.api.back();
+}
+addQty(key:any)
+{
+  if(this.proObj[key].qty == undefined)
+  {
+    this.proObj[key].qty = 0;
+    
+    
+    
+  }
+  else{
+    this.proObj[key].qty++;
+  }
+}
+minusQty(key:any)
+{
+  if(this.proObj[key].qty == undefined)
+  {
+    this.proObj[key].qty = 0;
+  }
+  else{
+   
+    if(this.proObj[key].qty != 0)
+    {
+    
+    this.proObj[key].qty--
+    }
+  }
 }
 
 }

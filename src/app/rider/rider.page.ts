@@ -8,7 +8,7 @@ import {ApisService } from "../apis.service";
   styleUrls: ['./rider.page.scss'],
 })
 export class RiderPage implements OnInit {
-riderObj:any = {email:"",name:"",onwork:"0",status:"1",pwd:"",mobile:"",tripInfo:{}}
+riderObj:any = {email:"",name:"",onwork:"0",status:"1",pwd:"",mobile:"",tripInfo:{},type:"rider"}
 id:any;
   constructor(private api:ApisService) { }
 

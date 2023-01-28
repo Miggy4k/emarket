@@ -7,6 +7,7 @@ import { Storage } from "@ionic/storage";
 import {Router,NavigationExtras} from "@angular/router";
 import { Observable } from 'rxjs';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@awesome-cordova-plugins/native-geocoder/ngx';
+import {Geolocation} from "@capacitor/geolocation";
 
 
 @Injectable({
@@ -74,7 +75,7 @@ config: any = environment.firebaseConfig;
 
       ele.present();
       this.AddressToGps(obj.location).then((res:any)=>{
-        alert(res);
+        
        let arr = res.split(',');
        obj.lat = arr[0];
        obj.lng = arr[1];
@@ -212,6 +213,10 @@ config: any = environment.firebaseConfig;
 
        this.setToken().then(()=>{
         obj["useremail"] = ApisService.email.replace(/[^\w\s]/gi, '');
+        Geolocation.getCurrentPosition().then((position)=>{
+
+        obj["userlat"] = position.coords.latitude.toString();
+        obj["userlng"] = position.coords.longitude.toString();
        firebase.database().ref(this.appname + "/orders/"  + id).set(obj).then(() => {
          ele.dismiss();
  
@@ -225,6 +230,9 @@ config: any = environment.firebaseConfig;
          this.showToast(JSON.stringify(err));
  
        })
+      },(err)=>{
+        this.showToast(JSON.stringify(err));
+      })
      })
      })
    }
@@ -253,6 +261,38 @@ config: any = environment.firebaseConfig;
         this.showToast(JSON.stringify(err));
 
       })
+    })
+    })
+   }
+   //assign rider
+   assignRider(riderEmail:any,orderId:any,fn:any)
+   {
+    this.loader.create({
+      message: "please wait..."
+    }).then((ele) => {
+
+      ele.present();
+      this.setToken().then(()=>{
+        // obj["adminemail"] = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
+      firebase.database().ref(this.appname + "/users/" + riderEmail+"/orderId").set(orderId).then(() => {
+        firebase.database().ref(this.appname + "/orders/" + orderId+"/rideremail").set(riderEmail).then(() => {
+        ele.dismiss();
+
+
+        fn("ok");
+        
+
+
+      }, (err) => {
+        ele.dismiss();
+        this.showToast(JSON.stringify(err));
+
+      })
+    }, (err) => {
+      ele.dismiss();
+      this.showToast(JSON.stringify(err));
+
+    })
     })
     })
    }
@@ -316,7 +356,7 @@ config: any = environment.firebaseConfig;
       ele.present();
       this.setToken().then(()=>{
       ApisService.email = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
-      firebase.database().ref(this.appname + "/riders/"+ApisService.email).once('value').then((snapshot1) => {
+      firebase.database().ref(this.appname + "/users/").once('value').then((snapshot1) => {
         ele.dismiss();
         fn(snapshot1.val());
       },(err)=>{
@@ -336,7 +376,8 @@ config: any = environment.firebaseConfig;
 
       ele.present();
       this.setToken().then(()=>{
-      firebase.database().ref(this.appname + "/riders/" + ApisService.email.replace(/[^\w\s]/gi, '') + "/" + id).set(obj).then(() => {
+        obj["adminemail"] = ApisService.email.replace(/[^a-zA-Z0-9 ]/g, '');
+      firebase.database().ref(this.appname + "/users/" + obj.email.replace(/[^\w\s]/gi, '')).set(obj).then(() => {
         ele.dismiss();
 
 

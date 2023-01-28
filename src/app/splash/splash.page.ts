@@ -28,6 +28,9 @@ export class SplashPage implements OnInit {
           this.router.navigate(["/orders"]);
           }
           else if(token.type == "user"){
+            this.router.navigate(["/shop"]);
+          }
+          else if(token.type == "rider"){
             this.router.navigate(["/orders"]);
           }
         }
